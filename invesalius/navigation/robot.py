@@ -125,9 +125,9 @@ class Robot(metaclass=Singleton):
 
     def RegisterRobot(self):
         Publisher.sendMessage("End busy cursor")
-        if not self.is_robot_connected:
-            wx.MessageBox(_("Unable to connect to the robot."), _("InVesalius 3"))
-            return
+        # if not self.is_robot_connected:
+        #     wx.MessageBox(_("Unable to connect to the robot."), _("InVesalius 3"))
+        #     return
 
         self.robot_coregistration_dialog = dlg.RobotCoregistrationDialog(
             robot=self, tracker=self.tracker

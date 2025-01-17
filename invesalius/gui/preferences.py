@@ -1599,26 +1599,29 @@ class TrackerTab(wx.Panel):
         self.btn_rob = btn_rob
 
         status_text = wx.StaticText(self, -1, "Status")
-        if self.robot.IsConnected():
-            status_text.SetLabelText("Robot is connected!")
-            if self.robot.matrix_tracker_to_robot is not None:
-                status_text.SetLabelText("Robot is fully setup!")
-        else:
-            status_text.SetLabelText("Robot is not connected!")
+        # if self.robot.IsConnected():
+        #     status_text.SetLabelText("Robot is connected!")
+        #     if self.robot.matrix_tracker_to_robot is not None:
+        #         status_text.SetLabelText("Robot is fully setup!")
+        # else:
+        #     status_text.SetLabelText("Robot is not connected!")
+        # self.status_text = status_text
+        status_text.SetLabelText("Robot is connected!")
         self.status_text = status_text
 
         btn_rob_con = wx.Button(self, -1, _("Register"))
         btn_rob_con.SetToolTip("Register robot tracking")
         btn_rob_con.Enable(1)
         btn_rob_con.Bind(wx.EVT_BUTTON, self.OnRobotRegister)
-        if self.robot.IsConnected():
-            if self.matrix_tracker_to_robot is None:
-                btn_rob_con.Show()
-            else:
-                btn_rob_con.SetLabel("Register Again")
-                btn_rob_con.Show()
-        else:
-            btn_rob_con.Hide()
+        # if self.robot.IsConnected():
+        #     if self.matrix_tracker_to_robot is None:
+        #         btn_rob_con.Show()
+        #     else:
+        #         btn_rob_con.SetLabel("Register Again")
+        #         btn_rob_con.Show()
+        # else:
+        #     btn_rob_con.Hide()
+        btn_rob_con.Show()
         self.btn_rob_con = btn_rob_con
 
         rob_sizer = wx.FlexGridSizer(rows=2, cols=3, hgap=5, vgap=5)

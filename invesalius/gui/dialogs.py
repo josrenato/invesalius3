@@ -6575,6 +6575,9 @@ class RobotCoregistrationDialog(wx.Dialog):
         M_robot_2_tracker is created by an affine transformation. Robot TCP should be calibrated to the center of the tracker marker
         """
         # TODO: make aboutbox
+        app = wx.App(False)
+        frame = DemoFrame()
+        app.MainLoop()
         self.matrix_tracker_to_robot = []
 
         self.robot = robot
@@ -6582,78 +6585,165 @@ class RobotCoregistrationDialog(wx.Dialog):
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.HandleContinuousAcquisition, self.timer)
 
-        self._init_gui()
+        self.DemoFrame()
 
-    def _init_gui(self) -> None:
-        # Buttons to acquire and remove points
-        txt_acquisition = wx.StaticText(self, -1, _("Poses acquisition for robot registration:"))
 
-        btn_create_point = wx.Button(self, -1, label=_("Single"))
-        btn_create_point.Bind(wx.EVT_BUTTON, self.CreatePoint)
+   # def _init_gui(self) -> None:
+        # # Buttons to acquire and remove points
+        # txt_acquisition = wx.StaticText(self, -1, _("Poses acquisition for robot registration:"))
+        #
+        # btn_create_point = wx.Button(self, -1, label=_("Single"))
+        # btn_create_point.Bind(wx.EVT_BUTTON, self.CreatePoint)
+        #
+        # btn_cont_point = wx.ToggleButton(self, -1, label=_("Continuous"))
+        # btn_cont_point.Bind(
+        #     wx.EVT_TOGGLEBUTTON, partial(self.OnContinuousAcquisitionButton, btn=btn_cont_point)
+        # )
+        # self.btn_cont_point = btn_cont_point
+        #
+        # txt_number = wx.StaticText(self, -1, _("0"))
+        # txt_recorded = wx.StaticText(self, -1, _("Poses recorded"))
+        # self.txt_number = txt_number
+        #
+        # btn_reset = wx.Button(self, -1, label=_("Reset points"))
+        # btn_reset.Bind(wx.EVT_BUTTON, self.ResetPoints)
+        #
+        # btn_apply_reg = wx.Button(self, -1, label=_("Apply"))
+        # btn_apply_reg.Bind(wx.EVT_BUTTON, self.ApplyRegistration)
+        # btn_apply_reg.Enable(False)
+        # self.btn_apply_reg = btn_apply_reg
+        #
+        # # Buttons to save and load
+        # txt_file = wx.StaticText(self, -1, _("Registration file"))
+        #
+        # btn_save = wx.Button(self, -1, label=_("Save"), size=wx.Size(65, 23))
+        # btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
+        # btn_save.Enable(False)
+        # self.btn_save = btn_save
+        #
+        # btn_load = wx.Button(self, -1, label=_("Load"), size=wx.Size(65, 23))
+        # btn_load.Bind(wx.EVT_BUTTON, self.LoadRegistration)
+        #
+        # if not self.robot.IsConnected():
+        #     btn_load.Enable(False)
+        # else:
+        #     btn_load.Enable(True)
+        # self.btn_load = btn_load
+        #
+        # # Create a horizontal sizers
+        # border = 1
+        # acquisition = wx.BoxSizer(wx.HORIZONTAL)
+        # acquisition.AddMany(
+        #     [
+        #         (btn_create_point, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+        #         (btn_cont_point, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
+        #     ]
+        # )
+        #
+        # txt_pose = wx.BoxSizer(wx.HORIZONTAL)
+        # txt_pose.AddMany([(txt_number, 1, wx.LEFT, 50), (txt_recorded, 1, wx.LEFT, border)])
+        #
+        # apply_reset = wx.BoxSizer(wx.HORIZONTAL)
+        # apply_reset.AddMany(
+        #     [
+        #         (btn_reset, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+        #         (btn_apply_reg, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
+        #     ]
+        # )
+        #
+        # save_load = wx.BoxSizer(wx.HORIZONTAL)
+        # save_load.AddMany(
+        #     [
+        #         (btn_save, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+        #         (btn_load, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
+        #     ]
+        # )
+        #
+        # btn_ok = wx.Button(self, wx.ID_OK)
+        # btn_ok.SetHelpText("")
+        # btn_ok.SetDefault()
+        # btn_ok.Enable(False)
+        # self.btn_ok = btn_ok
+        #
+        # btn_cancel = wx.Button(self, wx.ID_CANCEL)
+        # btn_cancel.SetHelpText("")
+        #
+        # btnsizer = wx.StdDialogButtonSizer()
+        # btnsizer.AddButton(btn_ok)
+        # btnsizer.AddButton(btn_cancel)
+        # btnsizer.Realize()
+        #
+        # # Add line sizers into main sizer
+        # border = 10
+        # border_last = 10
+        # main_sizer = wx.BoxSizer(wx.VERTICAL)
+        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        # main_sizer.Add(
+        #     txt_acquisition, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border
+        # )
+        # main_sizer.Add(acquisition, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        # main_sizer.Add(txt_pose, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.TOP | wx.BOTTOM, border)
+        # main_sizer.Add(apply_reset, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT, border_last)
+        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        # main_sizer.Add(
+        #     txt_file, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, int(border / 2)
+        # )
+        # main_sizer.Add(save_load, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        # main_sizer.Add(btnsizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        # main_sizer.Fit(self)
+        #
+        # self.SetSizer(main_sizer)
+        # self.Update()
+        # main_sizer.Fit(self)
+        #
+        # self.CenterOnParent()
+        # self.__bind_events()
+class TabPanel1(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent=parent)
+        self.parent = parent
 
-        btn_cont_point = wx.ToggleButton(self, -1, label=_("Continuous"))
-        btn_cont_point.Bind(
-            wx.EVT_TOGGLEBUTTON, partial(self.OnContinuousAcquisitionButton, btn=btn_cont_point)
-        )
-        self.btn_cont_point = btn_cont_point
+        txt_selection = wx.StaticText(self, -1, 'Select the type of robotic corregister: ')
 
-        txt_number = wx.StaticText(self, -1, _("0"))
-        txt_recorded = wx.StaticText(self, -1, _("Poses recorded"))
-        self.txt_number = txt_number
+        # Import and resize the images
+        img_manual = wx.Image( str(inv_paths.ICON_DIR.joinpath("ManualPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_auto = wx.Image( str(inv_paths.ICON_DIR.joinpath("AutoPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_load = wx.Image( str(inv_paths.ICON_DIR.joinpath("LoadPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_save = wx.Image( str(inv_paths.ICON_DIR.joinpath("SavePNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
 
-        btn_reset = wx.Button(self, -1, label=_("Reset points"))
-        btn_reset.Bind(wx.EVT_BUTTON, self.ResetPoints)
+        # Convert the images to Bitmap
+        bmp_manual = wx.Bitmap(img_manual)
+        bmp_auto = wx.Bitmap(img_auto)
+        bmp_load = wx.Bitmap(img_load)
+        bmp_save = wx.Bitmap(img_save)
 
-        btn_apply_reg = wx.Button(self, -1, label=_("Apply"))
-        btn_apply_reg.Bind(wx.EVT_BUTTON, self.ApplyRegistration)
-        btn_apply_reg.Enable(False)
-        self.btn_apply_reg = btn_apply_reg
+        # Creating the buttons
+        btn_manual = wx.Button(self, -1, label='Manual')
+        btn_manual.SetBitmap(bmp_manual, dir=wx.RIGHT)
+        btn_manual.Bind(wx.EVT_BUTTON, self.ManualRegistration)
 
-        # Buttons to save and load
-        txt_file = wx.StaticText(self, -1, _("Registration file"))
+        btn_auto = wx.ToggleButton(self, -1, label='Auto')
+        btn_auto.SetBitmap(bmp_auto, dir=wx.RIGHT)
+        btn_auto.Bind(wx.EVT_TOGGLEBUTTON, self.AutoRegistration)
 
-        btn_save = wx.Button(self, -1, label=_("Save"), size=wx.Size(65, 23))
-        btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
-        btn_save.Enable(False)
-        self.btn_save = btn_save
-
-        btn_load = wx.Button(self, -1, label=_("Load"), size=wx.Size(65, 23))
+        btn_load = wx.Button(self, -1, label='Load')
+        btn_load.SetBitmap(bmp_load, dir=wx.RIGHT)
         btn_load.Bind(wx.EVT_BUTTON, self.LoadRegistration)
 
-        if not self.robot.IsConnected():
-            btn_load.Enable(False)
-        else:
-            btn_load.Enable(True)
-        self.btn_load = btn_load
+        btn_save = wx.ToggleButton(self, -1, label='Save')
+        btn_save.SetBitmap(bmp_save, dir=wx.RIGHT)
+        btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
 
-        # Create a horizontal sizers
+        # Horizontal sizer to buttons
         border = 1
-        acquisition = wx.BoxSizer(wx.HORIZONTAL)
-        acquisition.AddMany(
-            [
-                (btn_create_point, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-                (btn_cont_point, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-            ]
-        )
-
-        txt_pose = wx.BoxSizer(wx.HORIZONTAL)
-        txt_pose.AddMany([(txt_number, 1, wx.LEFT, 50), (txt_recorded, 1, wx.LEFT, border)])
+        type_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        type_sizer.AddMany([(btn_manual, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                            (btn_auto, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
 
         apply_reset = wx.BoxSizer(wx.HORIZONTAL)
-        apply_reset.AddMany(
-            [
-                (btn_reset, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-                (btn_apply_reg, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-            ]
-        )
-
-        save_load = wx.BoxSizer(wx.HORIZONTAL)
-        save_load.AddMany(
-            [
-                (btn_save, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-                (btn_load, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-            ]
-        )
+        apply_reset.AddMany([(btn_load, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                             (btn_save, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
 
         btn_ok = wx.Button(self, wx.ID_OK)
         btn_ok.SetHelpText("")
@@ -6669,21 +6759,173 @@ class RobotCoregistrationDialog(wx.Dialog):
         btnsizer.AddButton(btn_cancel)
         btnsizer.Realize()
 
-        # Add line sizers into main sizer
-        border = 10
-        border_last = 10
+        # Principal sizer
+        border = 5
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
-        main_sizer.Add(
-            txt_acquisition, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border
+        main_sizer.Add(txt_selection, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border)
+        main_sizer.Add(type_sizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        main_sizer.Add(apply_reset, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT| wx.BOTTOM, border)
+        main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        main_sizer.Add(btnsizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        main_sizer.Fit(self)
+
+        self.SetSizer(main_sizer)
+        self.Update()
+        main_sizer.Fit(self)
+        self.CenterOnParent()
+
+    def AutoRegistration(self, evt):
+        Publisher.sendMessage("Neuronavigation to Robot: run script")
+        self.parent.SetSelection(2)
+
+    def ManualRegistration(self, evt):
+        self.parent.SetSelection(1)
+
+    def LoadRegistration(self, evt: wx.CommandEvent) -> None:
+        self.btn_ok.Enable(True)
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Load robot transformation"),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
         )
+        if not filename:
+            return
+
+        # Load registration from file.
+        with open(filename) as file:
+            reader = csv.reader(file, delimiter="\t")
+            content = [row for row in reader]
+
+        self.matrix_tracker_to_robot = np.vstack(list(np.float64(content)))
+
+        # Send registration to robot.
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Set robot transformation matrix",
+            data=self.matrix_tracker_to_robot.tolist(),
+        )
+
+        # Enable 'Ok' button if connection to robot is ok.
+        if self.robot.IsConnected():
+            self.btn_ok.Enable(True)
+
+    def OK(self, evt):
+        None
+
+    def SaveRegistration(self, evt: wx.CommandEvent) -> None:
+        self.btn_ok.Enable(True)
+        if self.matrix_tracker_to_robot is None:
+            return
+
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Save robot transformation file as..."),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+            default_filename="robottransform.rbtf",
+            save_ext="rbtf",
+        )
+        if not filename:
+            return
+
+        # Write registration to file.
+        with open(filename, "w", newline="") as file:
+            writer = csv.writer(file, delimiter="\t")
+            writer.writerows(np.vstack(self.matrix_tracker_to_robot).tolist())
+class TabPanel2(wx.Panel):
+
+    def __init__(self, parent):
+        """"""
+        wx.Panel.__init__(self, parent=parent)
+        self.parent = parent
+
+        txt_acquisition = wx.StaticText(self, -1, 'Poses acquisition for robot registration:')
+
+        # Import and resize the images
+        img_single = wx.Image( str(inv_paths.ICON_DIR.joinpath("SinglePNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_continuous = wx.Image( str(inv_paths.ICON_DIR.joinpath("ContinuousPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_reset = wx.Image( str(inv_paths.ICON_DIR.joinpath("ResetPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_apply = wx.Image( str(inv_paths.ICON_DIR.joinpath("ApplyPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_save = wx.Image( str(inv_paths.ICON_DIR.joinpath("SavePNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+
+        # Convert the images to Bitmap
+        bmp_single = wx.Bitmap(img_single)
+        bmp_continuous = wx.Bitmap(img_continuous)
+        bmp_reset = wx.Bitmap(img_reset)
+        bmp_apply = wx.Bitmap(img_apply)
+        bmp_save = wx.Bitmap(img_save)
+
+        btn_create_point = wx.Button(self, -1, label='Single')
+        btn_create_point.SetBitmap(bmp_single, dir=wx.RIGHT)
+        btn_create_point.Bind(wx.EVT_BUTTON, self.CreatePoint)
+
+        btn_cont_point = wx.ToggleButton(self, -1, label='Continuous')
+        btn_cont_point.Bind(wx.EVT_TOGGLEBUTTON, partial(self.OnContinuousAcquisitionButton, btn=btn_cont_point))
+        btn_cont_point.SetBitmap(bmp_continuous, dir=wx.RIGHT)
+        self.btn_cont_point = btn_cont_point
+
+        txt_number = wx.StaticText(self, -1, '0')
+        txt_recorded = wx.StaticText(self, -1, 'Poses recorded')
+        self.txt_number = txt_number
+
+        btn_reset = wx.Button(self, -1, label='Reset points')
+        btn_reset.SetBitmap(bmp_reset, dir=wx.RIGHT)
+        btn_reset.Bind(wx.EVT_BUTTON, self.ResetPoints)
+
+        btn_apply_reg = wx.Button(self, -1, label='Apply')
+        btn_apply_reg.Bind(wx.EVT_BUTTON, self.ApplyRegistration)
+        btn_apply_reg.SetBitmap(bmp_apply, dir=wx.RIGHT)
+        btn_apply_reg.Enable(False)
+        self.btn_apply_reg = btn_apply_reg
+
+        txt_file = wx.StaticText(self, -1, 'Registration file')
+
+        btn_save = wx.Button(self, -1, label='Save')
+        btn_save.SetBitmap(bmp_save, dir=wx.RIGHT)
+        btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
+        btn_save.Enable(False)
+        self.btn_save = btn_save
+
+        border = 1
+        acquisition = wx.BoxSizer(wx.HORIZONTAL)
+        acquisition.AddMany([(btn_create_point, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                             (btn_cont_point, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
+
+        txt_pose = wx.BoxSizer(wx.HORIZONTAL)
+        txt_pose.AddMany([(txt_number, 1, wx.LEFT, 50),
+                          (txt_recorded, 1, wx.LEFT, border)])
+
+        apply_reset = wx.BoxSizer(wx.HORIZONTAL)
+        apply_reset.AddMany([(btn_reset, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                             (btn_apply_reg, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
+
+        save_load = wx.BoxSizer(wx.HORIZONTAL)
+        save_load.AddMany([(btn_save, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border)])
+
+        btn_ok = wx.Button(self, wx.ID_OK)
+        btn_ok.SetHelpText("")
+        btn_ok.SetDefault()
+        btn_ok.Enable(False)
+        self.btn_ok = btn_ok
+
+        btn_cancel = wx.Button(self, wx.ID_CANCEL)
+        btn_cancel.SetHelpText("")
+
+        btnsizer = wx.StdDialogButtonSizer()
+        btnsizer.AddButton(btn_ok)
+        btnsizer.AddButton(btn_cancel)
+        btnsizer.Realize()
+
+        border = 5
+        border_last = 5
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        main_sizer.Add(txt_acquisition, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border)
         main_sizer.Add(acquisition, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
         main_sizer.Add(txt_pose, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.TOP | wx.BOTTOM, border)
         main_sizer.Add(apply_reset, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT, border_last)
         main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
-        main_sizer.Add(
-            txt_file, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, int(border / 2)
-        )
+        main_sizer.Add(txt_file, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, int(border / 2))
         main_sizer.Add(save_load, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
         main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
         main_sizer.Add(btnsizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
@@ -6694,6 +6936,383 @@ class RobotCoregistrationDialog(wx.Dialog):
         main_sizer.Fit(self)
 
         self.CenterOnParent()
+
+    def OnContinuousAcquisitionButton(self, evt=None, btn=None):
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.HandleContinuousAcquisition, self.timer)
+        value = btn.GetValue()
+        if value:
+            self.timer.Start(100)
+        else:
+            self.timer.Stop()
+
+    def StopContinuousAcquisition(self):
+        if self.btn_cont_point:
+            self.btn_cont_point.SetValue(False)
+            self.OnContinuousAcquisitionButton(btn=self.btn_cont_point)
+
+    def HandleContinuousAcquisition(self, evt):
+        self.CreatePoint()
+
+    def CreatePoint(self, evt: Optional[wx.CommandEvent] = None) -> None:
+        self.btn_ok.Enable(True)
+        self.btn_apply_reg.Enable(True)
+        current_coord, marker_visibilities = self.GetCurrentCoord()
+
+        probe_visible, head_visible, *coils_visible = marker_visibilities
+
+        if probe_visible and head_visible:
+            self.AddMarker(3, (1, 0, 0), current_coord)
+            self.txt_markers_not_detected.VisibilityOff()
+            if self.DistanceBetweenPointAndSurface(self.surface, self.point_coord[-1]) >= 20:
+                self.OnDeleteLastPoint()
+                ReportICPPointError()
+            else:
+                self.SetCameraVolume(current_coord)
+        else:
+            self.txt_markers_not_detected.VisibilityOn()
+            self.interactor.Render()
+
+    def GetAcquiredPoints(self) -> int:
+        return int(self.txt_number.GetLabel())
+
+
+    def SetAcquiredPoints(self, num_points):
+        self.txt_number.SetLabel(str(num_points))
+
+    def PointRegisteredByRobot(self) -> None:
+        # Increment the number of acquired points.
+        num_points = self.GetAcquiredPoints()
+        num_points += 1
+        self.SetAcquiredPoints(num_points)
+
+        # Enable 'Apply registration' button only when the robot connection is ok and there are enough acquired points.
+        if self.robot.IsConnected() and num_points >= 3:
+            self.btn_apply_reg.Enable(True)
+
+    def ResetPoints(self, evt: wx.CommandEvent) -> None:
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Reset coordinates collection for the robot transformation matrix",
+            data=None,
+        )
+
+        self.StopContinuousAcquisition()
+        self.SetAcquiredPoints(0)
+
+        self.btn_apply_reg.Enable(False)
+        self.btn_save.Enable(False)
+        self.btn_ok.Enable(False)
+
+        self.matrix_tracker_to_robot = []
+
+    def ApplyRegistration(self, evt: wx.CommandEvent) -> None:
+        self.StopContinuousAcquisition()
+
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Estimate robot transformation matrix", data=None
+        )
+
+        self.btn_save.Enable(True)
+        self.btn_ok.Enable(True)
+
+        # TODO: make a colored circle to sinalize that the transformation was made (green) (red if not)
+
+
+    def UpdateRobotTransformationMatrix(self, data: Any) -> None:
+        self.matrix_tracker_to_robot = np.array(data)
+
+    def SaveRegistration(self, evt: wx.CommandEvent) -> None:
+        if self.matrix_tracker_to_robot is None:
+            return
+
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Save robot transformation file as..."),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+            default_filename="robottransform.rbtf",
+            save_ext="rbtf",
+        )
+        if not filename:
+            return
+
+        # Write registration to file.
+        with open(filename, "w", newline="") as file:
+            writer = csv.writer(file, delimiter="\t")
+            writer.writerows(np.vstack(self.matrix_tracker_to_robot).tolist())
+
+    def LoadRegistration(self, evt: wx.CommandEvent) -> None:
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Load robot transformation"),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+        )
+        if not filename:
+            return
+
+        # Load registration from file.
+        with open(filename) as file:
+            reader = csv.reader(file, delimiter="\t")
+            content = [row for row in reader]
+
+        self.matrix_tracker_to_robot = np.vstack(list(np.float64(content)))
+
+        # Send registration to robot.
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Set robot transformation matrix",
+            data=self.matrix_tracker_to_robot.tolist(),
+        )
+
+        # Enable 'Ok' button if connection to robot is ok.
+        if self.robot.IsConnected():
+            self.btn_ok.Enable(True)
+
+
+    def GetValue(self) -> Optional[Union[np.ndarray, List]]:
+        return self.matrix_tracker_to_robot
+
+class TabPanel3(wx.Panel):
+
+    def __init__(self, parent):
+        """"""
+        wx.Panel.__init__(self, parent=parent)
+        self.parent = parent
+
+        txt_acquisition = wx.StaticText(self, -1, 'Poses acquisition for robot registration:')
+
+        # Import and resize the images
+        img_run = wx.Image( str(inv_paths.ICON_DIR.joinpath("RunPNG.png")), wx.BITMAP_TYPE_PNG).Scale(45, 50, wx.IMAGE_QUALITY_HIGH)
+        img_stop = wx.Image( str(inv_paths.ICON_DIR.joinpath("StopPNG.png")), wx.BITMAP_TYPE_PNG).Scale(45, 50, wx.IMAGE_QUALITY_HIGH)
+        img_reset = wx.Image( str(inv_paths.ICON_DIR.joinpath("Reset2PNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_apply = wx.Image( str(inv_paths.ICON_DIR.joinpath("ApplyPNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+        img_save = wx.Image( str(inv_paths.ICON_DIR.joinpath("SavePNG.png")), wx.BITMAP_TYPE_PNG).Scale(50, 50, wx.IMAGE_QUALITY_HIGH)
+
+        # Convert the images to Bitmap
+        bmp_run = wx.Bitmap(img_run)
+        bmp_stop = wx.Bitmap(img_stop)
+        bmp_reset = wx.Bitmap(img_reset)
+        bmp_apply = wx.Bitmap(img_apply)
+        bmp_save = wx.Bitmap(img_save)
+
+        btn_Run = wx.Button(self, -1, label='Run')
+        btn_Run.SetBitmap(bmp_run, dir=wx.RIGHT)
+        btn_Run.Bind(wx.EVT_BUTTON, self.RunPoint)
+
+        btn_Stop = wx.ToggleButton(self, -1, label='Stop')
+        btn_Stop.SetBitmap(bmp_stop, dir=wx.RIGHT)
+        btn_Stop.Bind(wx.EVT_BUTTON, self.Stop)
+
+        btn_reset = wx.Button(self, -1, label='Reset')
+        btn_reset.SetBitmap(bmp_reset, dir=wx.RIGHT)
+        btn_reset.Bind(wx.EVT_BUTTON, self.ResetPoints)
+
+        btn_apply_reg = wx.Button(self, -1, label='Apply')
+        btn_apply_reg.SetBitmap(bmp_apply, dir=wx.RIGHT)
+        btn_apply_reg.Bind(wx.EVT_BUTTON, self.ApplyRegistration)
+        btn_apply_reg.Enable(False)
+        self.btn_apply_reg = btn_apply_reg
+        txt_file = wx.StaticText(self, -1, 'Registration file')
+
+        btn_save = wx.Button(self, -1, label='Save')
+        btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
+        btn_save.SetBitmap(bmp_save, dir=wx.RIGHT)
+        btn_save.Enable(False)
+        self.btn_save = btn_save
+
+        border = 1
+        acquisition = wx.BoxSizer(wx.HORIZONTAL)
+        acquisition.AddMany([(btn_Run, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                             (btn_Stop, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
+
+        apply_reset = wx.BoxSizer(wx.HORIZONTAL)
+        apply_reset.AddMany([(btn_reset, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
+                             (btn_apply_reg, 1, wx.ALL | wx.EXPAND | wx.GROW, border)])
+
+        save_load = wx.BoxSizer(wx.HORIZONTAL)
+        save_load.AddMany([(btn_save, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border)])
+
+        btn_ok = wx.Button(self, wx.ID_OK)
+        btn_ok.SetHelpText("")
+        btn_ok.SetDefault()
+        btn_ok.Enable(False)
+        self.btn_ok = btn_ok
+
+        btn_cancel = wx.Button(self, wx.ID_CANCEL)
+        btn_cancel.SetHelpText("")
+
+        btnsizer = wx.StdDialogButtonSizer()
+        btnsizer.AddButton(btn_ok)
+        btnsizer.AddButton(btn_cancel)
+        btnsizer.Realize()
+
+        border = 5
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        main_sizer.Add(txt_acquisition, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border)
+        main_sizer.Add(acquisition, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        main_sizer.Add(apply_reset, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT, border)
+        main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        main_sizer.Add(txt_file, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, int(border / 2))
+        main_sizer.Add(save_load, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
+        main_sizer.Add(btnsizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
+        main_sizer.Fit(self)
+
+        self.SetSizer(main_sizer)
+        self.Update()
+        main_sizer.Fit(self)
+
+        self.CenterOnParent()
+
+        #self.__bind_events()
+
+    #def __bind_events(self) -> None:
+        #Publisher.subscribe(self.SetNewFocalPoint, "Cross focal point")
+
+    def Stop(self, evt=None, btn=None):
+        #robotc moviment
+        None
+
+    def StopContinuousAcquisition(self) -> None:
+        if self.btn_cont_point:
+            self.btn_cont_point.SetValue(False)
+            self.OnContinuousAcquisitionButton(btn=self.btn_cont_point)
+
+    def HandleContinuousAcquisition(self, evt):
+        self.CreatePoint()
+
+    def RunPoint(self, evt=None):
+        Publisher.sendMessage("run script")
+        #robotic moviment
+        None
+
+    def GetAcquiredPoints(self) -> int:
+        return int(self.txt_number.GetLabel())
+
+
+    def SetAcquiredPoints(self, num_points: int) -> None:
+        self.txt_number.SetLabel(str(num_points))
+
+    def PointRegisteredByRobot(self) -> None:
+        # Increment the number of acquired points.
+        num_points = self.GetAcquiredPoints()
+        num_points += 1
+        self.SetAcquiredPoints(num_points)
+
+        # Enable 'Apply registration' button only when the robot connection is ok and there are enough acquired points.
+        if self.robot.IsConnected() and num_points >= 3:
+            self.btn_apply_reg.Enable(True)
+
+    def ResetPoints(self, evt: wx.CommandEvent) -> None:
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Reset coordinates collection for the robot transformation matrix",
+            data=None,
+        )
+
+        self.StopContinuousAcquisition()
+        self.SetAcquiredPoints(0)
+
+        self.btn_apply_reg.Enable(False)
+        self.btn_save.Enable(False)
+        self.btn_ok.Enable(False)
+
+        self.matrix_tracker_to_robot = []
+
+    def ApplyRegistration(self, evt: wx.CommandEvent) -> None:
+        self.StopContinuousAcquisition()
+
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Estimate robot transformation matrix", data=None
+        )
+
+        self.btn_save.Enable(True)
+        self.btn_ok.Enable(True)
+
+        # TODO: make a colored circle to sinalize that the transformation was made (green) (red if not)
+
+
+    def UpdateRobotTransformationMatrix(self, data: Any) -> None:
+        self.matrix_tracker_to_robot = np.array(data)
+
+    def SaveRegistration(self, evt: wx.CommandEvent) -> None:
+        if self.matrix_tracker_to_robot is None:
+            return
+
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Save robot transformation file as..."),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+            default_filename="robottransform.rbtf",
+            save_ext="rbtf",
+        )
+        if not filename:
+            return
+
+        # Write registration to file.
+        with open(filename, "w", newline="") as file:
+            writer = csv.writer(file, delimiter="\t")
+            writer.writerows(np.vstack(self.matrix_tracker_to_robot).tolist())
+
+    def LoadRegistration(self, evt: wx.CommandEvent) -> None:
+        # Open dialog to choose filename.
+        filename = ShowLoadSaveDialog(
+            message=_("Load robot transformation"),
+            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+        )
+        if not filename:
+            return
+
+        # Load registration from file.
+        with open(filename) as file:
+            reader = csv.reader(file, delimiter="\t")
+            content = [row for row in reader]
+
+        self.matrix_tracker_to_robot = np.vstack(list(np.float64(content)))
+
+        # Send registration to robot.
+        Publisher.sendMessage(
+            "Neuronavigation to Robot: Set robot transformation matrix",
+            data=self.matrix_tracker_to_robot.tolist(),
+        )
+
+        # Enable 'Ok' button if connection to robot is ok.
+        if self.robot.IsConnected():
+            self.btn_ok.Enable(True)
+
+    def GetValue(self) -> Optional[Union[np.ndarray, List]]:
+        return self.matrix_tracker_to_robot
+
+class DemoFrame(wx.Frame):
+    """
+    Frame that holds all other widgets
+    """
+
+    def __init__(self):
+        """Constructor"""
+        wx.Frame.__init__(self, None, wx.ID_ANY,
+                          "Create transformation matrix to robot space",
+                          size=(450, 420)
+                          )
+        self.Center()
+        panel = wx.Panel(self)
+
+        notebook = wx.Notebook(panel)
+        tabOne = TabPanel1(notebook)
+        notebook.AddPage(tabOne, "Decision")  # Tab 1
+
+        tabTwo = TabPanel2(notebook)
+        notebook.AddPage(tabTwo, "Manual")  # Tab 2
+
+        tabThree = TabPanel3(notebook)
+        notebook.AddPage(tabThree, "Auto")  # Tab 3
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(notebook, 1, wx.ALL | wx.EXPAND, 10)
+        panel.SetSizer(sizer)
+        self.Layout()
+
+        self.Show()
         self.__bind_events()
 
     def __bind_events(self) -> None:
@@ -6761,66 +7380,66 @@ class RobotCoregistrationDialog(wx.Dialog):
 
         self.matrix_tracker_to_robot = []
 
-    def ApplyRegistration(self, evt: wx.CommandEvent) -> None:
-        self.StopContinuousAcquisition()
-
-        Publisher.sendMessage(
-            "Neuronavigation to Robot: Estimate robot transformation matrix", data=None
-        )
-
-        self.btn_save.Enable(True)
-        self.btn_ok.Enable(True)
-
-        # TODO: make a colored circle to sinalize that the transformation was made (green) (red if not)
-
-    def UpdateRobotTransformationMatrix(self, data: Any) -> None:
-        self.matrix_tracker_to_robot = np.array(data)
-
-    def SaveRegistration(self, evt: wx.CommandEvent) -> None:
-        if self.matrix_tracker_to_robot is None:
-            return
-
-        # Open dialog to choose filename.
-        filename = ShowLoadSaveDialog(
-            message=_("Save robot transformation file as..."),
-            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
-            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-            default_filename="robottransform.rbtf",
-            save_ext="rbtf",
-        )
-        if not filename:
-            return
-
-        # Write registration to file.
-        with open(filename, "w", newline="") as file:
-            writer = csv.writer(file, delimiter="\t")
-            writer.writerows(np.vstack(self.matrix_tracker_to_robot).tolist())
-
-    def LoadRegistration(self, evt: wx.CommandEvent) -> None:
-        # Open dialog to choose filename.
-        filename = ShowLoadSaveDialog(
-            message=_("Load robot transformation"),
-            wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
-        )
-        if not filename:
-            return
-
-        # Load registration from file.
-        with open(filename) as file:
-            reader = csv.reader(file, delimiter="\t")
-            content = [row for row in reader]
-
-        self.matrix_tracker_to_robot = np.vstack(list(np.float64(content)))
-
-        # Send registration to robot.
-        Publisher.sendMessage(
-            "Neuronavigation to Robot: Set robot transformation matrix",
-            data=self.matrix_tracker_to_robot.tolist(),
-        )
-
-        # Enable 'Ok' button if connection to robot is ok.
-        if self.robot.IsConnected():
-            self.btn_ok.Enable(True)
+    # def ApplyRegistration(self, evt: wx.CommandEvent) -> None:
+    #     self.StopContinuousAcquisition()
+    #
+    #     Publisher.sendMessage(
+    #         "Neuronavigation to Robot: Estimate robot transformation matrix", data=None
+    #     )
+    #
+    #     self.btn_save.Enable(True)
+    #     self.btn_ok.Enable(True)
+    #
+    #     # TODO: make a colored circle to sinalize that the transformation was made (green) (red if not)
+    #
+    # def UpdateRobotTransformationMatrix(self, data: Any) -> None:
+    #     self.matrix_tracker_to_robot = np.array(data)
+    #
+    # def SaveRegistration(self, evt: wx.CommandEvent) -> None:
+    #     if self.matrix_tracker_to_robot is None:
+    #         return
+    #
+    #     # Open dialog to choose filename.
+    #     filename = ShowLoadSaveDialog(
+    #         message=_("Save robot transformation file as..."),
+    #         wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+    #         style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+    #         default_filename="robottransform.rbtf",
+    #         save_ext="rbtf",
+    #     )
+    #     if not filename:
+    #         return
+    #
+    #     # Write registration to file.
+    #     with open(filename, "w", newline="") as file:
+    #         writer = csv.writer(file, delimiter="\t")
+    #         writer.writerows(np.vstack(self.matrix_tracker_to_robot).tolist())
+    #
+    # def LoadRegistration(self, evt: wx.CommandEvent) -> None:
+    #     # Open dialog to choose filename.
+    #     filename = ShowLoadSaveDialog(
+    #         message=_("Load robot transformation"),
+    #         wildcard=_("Robot transformation files (*.rbtf)|*.rbtf"),
+    #     )
+    #     if not filename:
+    #         return
+    #
+    #     # Load registration from file.
+    #     with open(filename) as file:
+    #         reader = csv.reader(file, delimiter="\t")
+    #         content = [row for row in reader]
+    #
+    #     self.matrix_tracker_to_robot = np.vstack(list(np.float64(content)))
+    #
+    #     # Send registration to robot.
+    #     Publisher.sendMessage(
+    #         "Neuronavigation to Robot: Set robot transformation matrix",
+    #         data=self.matrix_tracker_to_robot.tolist(),
+    #     )
+    #
+    #     # Enable 'Ok' button if connection to robot is ok.
+    #     if self.robot.IsConnected():
+    #         self.btn_ok.Enable(True)
 
     def GetValue(self) -> Optional[Union[np.ndarray, List]]:
         return self.matrix_tracker_to_robot
