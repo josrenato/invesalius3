@@ -6587,118 +6587,6 @@ class RobotCoregistrationDialog(wx.Dialog):
 
         self.DemoFrame()
 
-
-   # def _init_gui(self) -> None:
-        # # Buttons to acquire and remove points
-        # txt_acquisition = wx.StaticText(self, -1, _("Poses acquisition for robot registration:"))
-        #
-        # btn_create_point = wx.Button(self, -1, label=_("Single"))
-        # btn_create_point.Bind(wx.EVT_BUTTON, self.CreatePoint)
-        #
-        # btn_cont_point = wx.ToggleButton(self, -1, label=_("Continuous"))
-        # btn_cont_point.Bind(
-        #     wx.EVT_TOGGLEBUTTON, partial(self.OnContinuousAcquisitionButton, btn=btn_cont_point)
-        # )
-        # self.btn_cont_point = btn_cont_point
-        #
-        # txt_number = wx.StaticText(self, -1, _("0"))
-        # txt_recorded = wx.StaticText(self, -1, _("Poses recorded"))
-        # self.txt_number = txt_number
-        #
-        # btn_reset = wx.Button(self, -1, label=_("Reset points"))
-        # btn_reset.Bind(wx.EVT_BUTTON, self.ResetPoints)
-        #
-        # btn_apply_reg = wx.Button(self, -1, label=_("Apply"))
-        # btn_apply_reg.Bind(wx.EVT_BUTTON, self.ApplyRegistration)
-        # btn_apply_reg.Enable(False)
-        # self.btn_apply_reg = btn_apply_reg
-        #
-        # # Buttons to save and load
-        # txt_file = wx.StaticText(self, -1, _("Registration file"))
-        #
-        # btn_save = wx.Button(self, -1, label=_("Save"), size=wx.Size(65, 23))
-        # btn_save.Bind(wx.EVT_BUTTON, self.SaveRegistration)
-        # btn_save.Enable(False)
-        # self.btn_save = btn_save
-        #
-        # btn_load = wx.Button(self, -1, label=_("Load"), size=wx.Size(65, 23))
-        # btn_load.Bind(wx.EVT_BUTTON, self.LoadRegistration)
-        #
-        # if not self.robot.IsConnected():
-        #     btn_load.Enable(False)
-        # else:
-        #     btn_load.Enable(True)
-        # self.btn_load = btn_load
-        #
-        # # Create a horizontal sizers
-        # border = 1
-        # acquisition = wx.BoxSizer(wx.HORIZONTAL)
-        # acquisition.AddMany(
-        #     [
-        #         (btn_create_point, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-        #         (btn_cont_point, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-        #     ]
-        # )
-        #
-        # txt_pose = wx.BoxSizer(wx.HORIZONTAL)
-        # txt_pose.AddMany([(txt_number, 1, wx.LEFT, 50), (txt_recorded, 1, wx.LEFT, border)])
-        #
-        # apply_reset = wx.BoxSizer(wx.HORIZONTAL)
-        # apply_reset.AddMany(
-        #     [
-        #         (btn_reset, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-        #         (btn_apply_reg, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-        #     ]
-        # )
-        #
-        # save_load = wx.BoxSizer(wx.HORIZONTAL)
-        # save_load.AddMany(
-        #     [
-        #         (btn_save, 1, wx.EXPAND | wx.GROW | wx.TOP | wx.RIGHT | wx.LEFT, border),
-        #         (btn_load, 1, wx.ALL | wx.EXPAND | wx.GROW, border),
-        #     ]
-        # )
-        #
-        # btn_ok = wx.Button(self, wx.ID_OK)
-        # btn_ok.SetHelpText("")
-        # btn_ok.SetDefault()
-        # btn_ok.Enable(False)
-        # self.btn_ok = btn_ok
-        #
-        # btn_cancel = wx.Button(self, wx.ID_CANCEL)
-        # btn_cancel.SetHelpText("")
-        #
-        # btnsizer = wx.StdDialogButtonSizer()
-        # btnsizer.AddButton(btn_ok)
-        # btnsizer.AddButton(btn_cancel)
-        # btnsizer.Realize()
-        #
-        # # Add line sizers into main sizer
-        # border = 10
-        # border_last = 10
-        # main_sizer = wx.BoxSizer(wx.VERTICAL)
-        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
-        # main_sizer.Add(
-        #     txt_acquisition, 0, wx.BOTTOM | wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border
-        # )
-        # main_sizer.Add(acquisition, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
-        # main_sizer.Add(txt_pose, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.TOP | wx.BOTTOM, border)
-        # main_sizer.Add(apply_reset, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT, border_last)
-        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
-        # main_sizer.Add(
-        #     txt_file, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, int(border / 2)
-        # )
-        # main_sizer.Add(save_load, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
-        # main_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border)
-        # main_sizer.Add(btnsizer, 0, wx.GROW | wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border)
-        # main_sizer.Fit(self)
-        #
-        # self.SetSizer(main_sizer)
-        # self.Update()
-        # main_sizer.Fit(self)
-        #
-        # self.CenterOnParent()
-        # self.__bind_events()
 class TabPanel1(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
@@ -6776,7 +6664,6 @@ class TabPanel1(wx.Panel):
         self.CenterOnParent()
 
     def AutoRegistration(self, evt):
-        Publisher.sendMessage("Neuronavigation to Robot: run script")
         self.parent.SetSelection(2)
 
     def ManualRegistration(self, evt):
@@ -7171,6 +7058,7 @@ class TabPanel3(wx.Panel):
 
     def Stop(self, evt=None, btn=None):
         #robotc moviment
+        #Publisher.sendMessage("Neuronavigation to Robot: Stop")
         None
 
     def StopContinuousAcquisition(self) -> None:
@@ -7182,7 +7070,7 @@ class TabPanel3(wx.Panel):
         self.CreatePoint()
 
     def RunPoint(self, evt=None):
-        Publisher.sendMessage("run script")
+        Publisher.sendMessage("Neuronavigation to Robot: run script")
         #robotic moviment
         None
 
